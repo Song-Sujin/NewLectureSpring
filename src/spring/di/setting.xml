@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+		
+	
+	<!-- Annotation 방식을 사용하기 위한 설정 -->
+	<!-- config 중 일부분은 annotation 했으니까 이 객체들의 annotation을 찾아라 -->
+	<!-- <context:component-scan base-package="spring.di.ui" /> 이걸 쓴 뒤부터는 아래 코드는 필요 없음
+	<context:annotation-config /> -->
+	
+	
+	<!-- @Conponent Annotation만 추가한다면 에러 발생 -->
+	<!-- ㅇㅇ패키지 안에 있는 클래스들을 읽어서, component가 있는지 찾아라. 찾아서 객체화 시켜라 -->
+	<!-- 따라서 이것만 있으면 <context:annotation-config />는 없어도 됨 -->
+	<context:component-scan base-package="spring.di.ui" />
+	
+	<!-- Exam exam = new NewlecExam(); -->
+	<!-- @Autowired(required = false) 처리를 하면 아래 bean 등록을 하지 않아도 됨 -->
+	<bean id="exam" class="spring.di.entity.NewlecExam" p:kor="10" p:eng="10"/>
+	<!-- <bean id="exam2" class="spring.di.entity.NewlecExam" p:kor="20" p:eng="20"/> -->
+	<!-- p태그를 활용하기 전 코드
+	<bean id="exam" class="spring.di.entity.NewlecExam">
+		생성자로 활용하기 전 코드
+		<property name="kor">
+			<value>10</value>
+		</property>
+		<property name="eng" value="10"></property>
+		<property name="math" value="10"></property>
+		<property name="com" value="10"></property>
+		
+		값 4개를 가지고 있는 생성자를 이용
+		<constructor-arg name="kor" value="10"></constructor-arg>
+		<constructor-arg name="eng" value="20"></constructor-arg>
+		<constructor-arg name="com" value="30"></constructor-arg>
+		<constructor-arg name="math" value="40"></constructor-arg>
+	</bean> -->
+	
+	<!-- ExamConsole console = new GridExamConsole(); -->
+	<!-- annotation component 처리 하기 전 코드
+	<bean id="console" class="spring.di.ui.InlineExamConsole">
+		console.setExam(exam);
+		
+		@Autowired 적용 전 코드
+		<property name="exam" ref="exam" />
+	</bean> -->
+	
+	<!-- 콜렉션(ArrayList) 생성과 목록 DI -->
+	
+	<!-- 컬렉션 리스트를 생성자에 넘기는 방식으로 ArrayList만들기 -->
+	<!-- 
+	<bean id="exams" class="java.util.ArrayList">
+		<constructor-arg>
+			실제로 객체를 만들지는 못함
+			<list>
+				하나는 직접 생성, 하나는 위에있는 exam빈을 참조
+				<bean class="spring.di.entity.NewlecExam" p:kor="1" p:eng="1"/>
+				<ref bean="exam"/>
+			</list>
+		</constructor-arg>
+	</bean> -->
+	
+	
+	
+	<!-- 실제로 객체를 가질 수 있는 능력을 가짐 -->
+	<!-- 
+	<util:list id="exams" list-class="java.util.ArrayList">
+		<bean class="spring.di.entity.NewlecExam" p:kor="1" p:eng="1" />
+		<ref bean="exam" />
+	</util:list> -->
+
+</beans>
